@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RestroDining Hub</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { font-family: 'Poppins', sans-serif; }
+        body { background: #f8f8f8; }
+        .food-card { transition: 0.4s; }
+        .food-card:hover { transform: translateY(-8px); }
+        .food-img { height: 230px; object-fit: cover; transition: 0.4s; }
+        .food-card:hover .food-img { transform: scale(1.08); }
+    </style>
+</head>
+<body>
+
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="bg-red-500 text-white p-2 rounded-xl text-xl">🍴</div>
+                <h1 class="text-2xl font-bold text-gray-800">RestroDining Hub</h1>
+            </div>
+
+            <form method="GET" class="hidden md:flex w-[45%]">
+                <input type="text" name="q" placeholder="Search for restaurant, food..." class="w-full px-5 py-3 rounded-l-full border outline-none">
+                <button class="bg-red-500 hover:bg-red-600 text-white px-6 rounded-r-full">Search</button>
+            </form>
+
+            <div class="flex items-center gap-6 text-gray-700 font-medium">
+                <a href="/" class="hover:text-red-500">Home</a>
+                <a href="/cart/" class="hover:text-red-500">Cart</a>
+                <a href="/orders/" class="hover:text-red-500">Orders</a>
+                <a href="/tables/" class="hover:text-red-500">Table Booking</a>
+                <a href="/wishlist/" class="hover:text-red-500">Wishlist</a>
+                <a href="/dashboard/" class="hover:text-red-500">Dashboard</a>
+
+                {% if user.is_authenticated %}
+                <form action="/logout/" method="POST" class="inline">
+                    {% csrf_token %}
+                    <button class="bg-black text-white px-5 py-2 rounded-full hover:bg-gray-800">Logout</button>
+                </form>
+                {% else %}
+                <a href="/login/" class="hover:text-red-500">Login</a>
+                <a href="/register/" class="bg-red-500 text-white px-5 py-2 rounded-full hover:bg-red-600">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-black text-white py-10 mt-12">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-10">
+            <div>
+                <h2 class="text-2xl font-bold">🍴 RestroDining Hub</h2>
+                <p class="text-gray-400 mt-4">Discover restaurants, book tables, order delicious food online.</p>
+            </div>
+            <div>
+                <h3 class="text-xl font-semibold mb-4">Quick Links</h3>
+                <div class="flex flex-col gap-2 text-gray-400">
+                    <a href="/">Home</a>
+                    <a href="/cart/">Cart</a>
+                    <a href="/orders/">Orders</a>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-xl font-semibold mb-4">Contact</h3>
+                <p class="text-gray-400">Ahmedabad, Gujarat</p>
+                <p class="text-gray-400 mt-2">support@restrodininghub.com</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

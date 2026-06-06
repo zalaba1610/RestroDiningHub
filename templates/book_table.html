@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="max-w-xl mx-auto bg-white shadow-2xl rounded-3xl p-10 mt-16">
+
+    <h1 class="text-4xl font-bold mb-8 text-center">
+        Confirm Booking 🍽️
+    </h1>
+
+    <div class="bg-gray-100 p-6 rounded-2xl mb-8">
+
+        <h2 class="text-2xl font-bold">
+            Table {{ table.table_number }}
+        </h2>
+
+        <p class="text-gray-500 mt-2">
+            Seats: {{ table.seats }}
+        </p>
+
+    </div>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <!-- RESTAURANT SELECT -->
+
+        <label class="font-semibold">
+            Select Restaurant
+        </label>
+
+        <select
+        name="restaurant"
+        required
+        class="w-full border p-4 rounded-2xl mt-2 mb-6">
+
+            <option value="">
+                Choose Restaurant
+            </option>
+
+            {% for restaurant in restaurants %}
+
+            <option value="{{ restaurant.id }}">
+                {{ restaurant.name }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+        <!-- DATE -->
+
+        <label class="font-semibold">
+            Select Date
+        </label>
+
+        <input
+        type="date"
+        name="booking_date"
+        required
+        class="w-full border p-4 rounded-2xl mt-2 mb-6">
+
+        <!-- TIME -->
+
+        <label class="font-semibold">
+            Select Time
+        </label>
+
+        <input
+        type="time"
+        name="booking_time"
+        required
+        class="w-full border p-4 rounded-2xl mt-2 mb-8">
+
+        <!-- BUTTON -->
+
+        <button
+        class="w-full bg-red-500 hover:bg-red-600 text-white py-4 rounded-2xl text-lg font-semibold">
+
+            Confirm Booking
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

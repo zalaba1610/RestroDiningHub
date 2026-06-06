@@ -1,0 +1,522 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto px-6 mt-8">
+
+    <!-- RESTAURANT HEADER -->
+
+    <div class="grid md:grid-cols-3 gap-4">
+
+        <!-- BIG IMAGE -->
+
+        <div class="md:col-span-2">
+
+            <img
+            src="{{ restaurant.image.url }}"
+            class="w-full h-[450px] object-cover rounded-3xl shadow-lg">
+
+        </div>
+
+        <!-- SIDE IMAGES -->
+
+        <div class="grid grid-rows-2 gap-4">
+
+            {% for item in items|slice:":2" %}
+
+            <img
+            src="{{ item.image.url }}"
+            class="w-full h-[215px] object-cover rounded-3xl shadow-lg">
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <!-- FOOD GALLERY -->
+
+    <div class="mt-12">
+
+        <h2 class="text-4xl font-bold mb-8">
+            Restaurant Gallery 📸
+        </h2>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+            {% for image in gallery %}
+
+            <div class="overflow-hidden rounded-3xl shadow-lg">
+
+                <img
+                src="{{ image.image.url }}"
+                class="w-full h-[220px] object-cover hover:scale-110 transition duration-500">
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <!-- INFO -->
+
+    <div class="mt-8 flex flex-col md:flex-row justify-between gap-6">
+
+        <div>
+
+            <h1 class="text-5xl font-bold text-gray-800">
+                {{ restaurant.name }}
+            </h1>
+
+            <p class="text-gray-500 mt-4 text-lg">
+                {{ restaurant.address }}
+            </p>
+
+            <div class="flex gap-4 mt-5">
+
+                <span class="bg-green-500 text-white px-5 py-2 rounded-full">
+                    ⭐ {{ restaurant.rating }}
+                </span>
+
+                <span class="bg-red-500 text-white px-5 py-2 rounded-full">
+                    🛵 {{ restaurant.delivery_time }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BOOK TABLE -->
+
+    <div class="bg-white shadow-2xl rounded-3xl p-8 mt-12">
+
+        <h2 class="text-4xl font-bold mb-10">
+            Book a Table 🍽️
+        </h2>
+
+        <form action="/confirm-booking/" method="POST">
+
+            {% csrf_token %}
+
+            <div class="grid md:grid-cols-3 gap-6">
+
+                <!-- DATE -->
+
+                <div>
+
+                    <label class="font-semibold block mb-3">
+                        Select Date
+                    </label>
+
+                    <input
+                    type="date"
+                    name="date"
+                    class="w-full border-2 border-gray-200 p-4 rounded-2xl focus:outline-none focus:border-red-500">
+
+                </div>
+
+                <!-- GUEST -->
+
+                <div>
+
+                    <label class="font-semibold block mb-3">
+                        Guests
+                    </label>
+
+                    <select
+                    name="guests"
+                    class="w-full border-2 border-gray-200 p-4 rounded-2xl focus:outline-none focus:border-red-500">
+
+                        <option>1 Guest</option>
+                        <option>2 Guests</option>
+                        <option>4 Guests</option>
+                        <option>6 Guests</option>
+                        <option>10 Guests</option>
+
+                    </select>
+
+                </div>
+
+                <!-- MEAL -->
+
+                <div>
+
+                    <label class="font-semibold block mb-3">
+                        Meal Type
+                    </label>
+
+                    <select
+                    name="meal"
+                    class="w-full border-2 border-gray-200 p-4 rounded-2xl focus:outline-none focus:border-red-500">
+
+                        <option>Breakfast</option>
+                        <option>Lunch</option>
+                        <option>Dinner</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <!-- TIME SLOT -->
+
+            <div class="mt-10">
+
+                <h3 class="text-2xl font-bold mb-6">
+                    Select Slot ⏰
+                </h3>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+                    {% for slot in slots %}
+
+                    <label>
+                        <input
+                        type="radio"
+                        name="time"
+                        value="{{ slot }}"
+                        class="hidden peer">
+
+                        <div class="slot-box">
+
+                            {{ slot }}
+
+                        </div>
+
+                    </label>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            <!-- OFFERS -->
+
+            <div class="mt-12">
+
+                <h3 class="text-2xl font-bold mb-6">
+                    Dining Offers 🎁
+                </h3>
+
+                <div class="grid md:grid-cols-2 gap-6">
+
+                    <div class="border-2 border-red-200 rounded-3xl p-6">
+
+                        <h4 class="text-2xl font-bold">
+                            Flat 50% OFF
+                        </h4>
+
+                        <p class="text-gray-500 mt-3">
+                            Valid on prepaid bookings
+                        </p>
+
+                    </div>
+
+                    <div class="border-2 border-green-200 rounded-3xl p-6">
+
+                        <h4 class="text-2xl font-bold">
+                            Free Dessert 🍰
+                        </h4>
+
+                        <p class="text-gray-500 mt-3">
+                            On bookings above ₹999
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- BUTTON -->
+
+            <button
+            class="w-full bg-red-500 hover:bg-red-600 text-white py-5 rounded-2xl text-xl font-bold mt-12 transition duration-300">
+
+                Proceed Booking 🚀
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- MENU -->
+
+    <div class="mt-14">
+
+        <h2 class="text-4xl font-bold mb-8">
+            Popular Dishes 🍴
+        </h2>
+
+        <div class="grid md:grid-cols-3 gap-8">
+
+            {% for item in items %}
+
+            <div class="bg-white rounded-3xl overflow-hidden shadow-lg hover:scale-105 transition duration-300">
+
+                <!-- IMAGE -->
+
+                <img
+                src="{{ item.image.url }}"
+                class="w-full h-[250px] object-cover">
+
+                <!-- CONTENT -->
+
+                <div class="p-6">
+
+                    <div class="flex justify-between items-center">
+
+                        <h3 class="text-2xl font-bold">
+                            {{ item.name }}
+                        </h3>
+
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full">
+
+                            ⭐ {{ item.rating }}
+
+                        </span>
+
+                    </div>
+
+                    <p class="text-gray-500 mt-3">
+                        {{ item.description }}
+                    </p>
+
+                    <!-- PRICE -->
+
+                    <div class="flex justify-between items-center mt-5">
+
+                        <h4 class="text-3xl font-bold text-red-500">
+
+                            ₹{{ item.price }}
+
+                        </h4>
+
+                        {% if item.is_veg %}
+
+                        <span class="bg-green-500 text-white px-4 py-1 rounded-full">
+
+                            Veg
+
+                        </span>
+
+                        {% else %}
+
+                        <span class="bg-red-500 text-white px-4 py-1 rounded-full">
+
+                            Non Veg
+
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+                    <!-- FORM -->
+
+                    <form action="/add-to-cart/{{ item.id }}/" method="POST">
+
+                        {% csrf_token %}
+
+                        <!-- SIZE -->
+
+                        <div class="mt-5">
+
+                            <label class="font-semibold block mb-2">
+                                Select Size
+                            </label>
+
+                            <select
+                            name="size"
+                            class="w-full border-2 border-gray-200 p-3 rounded-2xl">
+
+                                <option>Regular</option>
+                                <option>Medium</option>
+                                <option>Large</option>
+
+                            </select>
+
+                        </div>
+
+                        <!-- EXTRAS -->
+
+                        <div class="mt-5">
+
+                            <label class="font-semibold block mb-2">
+                                Add Extras
+                            </label>
+
+                            <select
+                            name="extra"
+                            class="w-full border-2 border-gray-200 p-3 rounded-2xl">
+
+                                <option>Cheese</option>
+                                <option>Cold Drink</option>
+                                <option>French Fries</option>
+
+                            </select>
+
+                        </div>
+
+                        <!-- QUANTITY -->
+
+                        <div class="mt-5">
+
+                            <label class="font-semibold block mb-2">
+                                Quantity
+                            </label>
+
+                            <input
+                            type="number"
+                            name="quantity"
+                            value="1"
+                            min="1"
+                            class="w-full border-2 border-gray-200 p-3 rounded-2xl">
+
+                        </div>
+
+                        <!-- BUTTON -->
+
+                        <button
+                        class="w-full bg-red-500 hover:bg-red-600 text-white py-4 rounded-2xl mt-6 font-semibold">
+
+                            Add To Cart 🛒
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <!-- REVIEWS -->
+
+    <div class="mt-16 mb-20">
+
+        <h2 class="text-4xl font-bold mb-8">
+            Customer Reviews 💬
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-6">
+
+            {% for review in reviews %}
+
+            <div class="bg-white p-6 rounded-3xl shadow-lg">
+
+                <div class="flex justify-between items-center">
+
+                    <h3 class="text-xl font-bold">
+                        {{ review.user.username }}
+                    </h3>
+
+                    <span class="bg-yellow-400 px-4 py-1 rounded-full">
+
+                        ⭐ {{ review.rating }}
+
+                    </span>
+
+                </div>
+
+                <p class="text-gray-600 mt-4">
+                    {{ review.comment }}
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- ADD REVIEW -->
+
+        <div class="bg-white p-8 rounded-3xl shadow-lg mt-10">
+
+            <h2 class="text-3xl font-bold mb-6">
+                Add Your Review ✍️
+            </h2>
+
+            <form method="POST"
+                  action="/review/{{ items.first.id }}/">
+
+                {% csrf_token %}
+
+                <label class="font-semibold">
+                    Rating
+                </label>
+
+                <select
+                name="rating"
+                class="w-full border p-4 rounded-2xl mt-2 mb-5">
+
+                    <option value="5">⭐⭐⭐⭐⭐</option>
+                    <option value="4">⭐⭐⭐⭐</option>
+                    <option value="3">⭐⭐⭐</option>
+                    <option value="2">⭐⭐</option>
+                    <option value="1">⭐</option>
+
+                </select>
+
+                <label class="font-semibold">
+                    Comment
+                </label>
+
+                <textarea
+                name="comment"
+                rows="4"
+                placeholder="Write your review..."
+                class="w-full border p-4 rounded-2xl mt-2"></textarea>
+
+                <button
+                class="bg-red-500 hover:bg-red-600 text-white px-8 py-4 rounded-2xl mt-6">
+
+                    Submit Review
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+.slot-box{
+    padding:14px;
+    border:2px solid #e5e7eb;
+    border-radius:18px;
+    text-align:center;
+    cursor:pointer;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.peer:checked + .slot-box{
+    background:#ef4444;
+    color:white;
+    border-color:#ef4444;
+}
+
+.slot-box:hover{
+    border-color:#ef4444;
+}
+
+</style>
+
+{% endblock %}

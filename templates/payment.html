@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="p-6">
+
+  <h2 class="text-2xl font-bold mb-4">Total: ₹{{ total }}</h2>
+
+  <button id="pay-btn"
+          class="bg-green-500 text-white px-4 py-2 rounded">
+      Pay Now
+  </button>
+
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+var options = {
+    key: "{{ key_id }}",
+    amount: "{{ payment.amount }}",
+    currency: "INR",
+    name: "Restro Dining",
+    description: "Food Order",
+
+    order_id: "{{ payment.id }}",
+
+    handler: function (response) {
+        alert("Payment Successful 🎉");
+
+        window.location.href = "/orders/";
+    }
+};
+
+var rzp = new Razorpay(options);
+
+document.getElementById("pay-btn").onclick = function(e){
+    rzp.open();
+    e.preventDefault();
+};
+</script>
+
+{% endblock %}

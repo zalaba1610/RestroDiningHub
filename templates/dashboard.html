@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto px-6 mt-10 mb-20">
+
+    <!-- TITLE -->
+    <div class="flex justify-between items-center mb-10">
+
+        <div>
+            <h1 class="text-5xl font-bold">
+                Restaurant Dashboard 📊
+            </h1>
+
+            <p class="text-gray-500 mt-3">
+                Monitor orders, revenue, bookings and customers
+            </p>
+        </div>
+
+    </div>
+
+    <!-- STATS -->
+    <div class="grid md:grid-cols-4 gap-8">
+
+        <div class="bg-white shadow-xl rounded-3xl p-8">
+            <h2 class="text-gray-500 text-lg">Total Orders</h2>
+            <h1 class="text-5xl font-bold mt-4 text-red-500">
+                {{ total_orders }}
+            </h1>
+        </div>
+
+        <div class="bg-white shadow-xl rounded-3xl p-8">
+            <h2 class="text-gray-500 text-lg">Revenue</h2>
+            <h1 class="text-5xl font-bold mt-4 text-green-500">
+                ₹{{ total_revenue }}
+            </h1>
+        </div>
+
+        <div class="bg-white shadow-xl rounded-3xl p-8">
+            <h2 class="text-gray-500 text-lg">Menu Items</h2>
+            <h1 class="text-5xl font-bold mt-4 text-blue-500">
+                {{ total_menu }}
+            </h1>
+        </div>
+
+        <div class="bg-white shadow-xl rounded-3xl p-8">
+            <h2 class="text-gray-500 text-lg">Reviews</h2>
+            <h1 class="text-5xl font-bold mt-4 text-yellow-500">
+                {{ total_reviews }}
+            </h1>
+        </div>
+
+    </div>
+
+    <!-- SPACING -->
+    <div class="mt-12"></div>
+
+    <!-- BOOKINGS SECTION -->
+    <h2 class="text-2xl font-bold mt-10 mb-4">
+    My Bookings
+</h2>
+
+{% for b in bookings %}
+    <div class="bg-white shadow-md rounded-xl p-4 mb-4 flex justify-between items-center">
+
+        <div>
+            <p><b>Restaurant:</b> {{ b.restaurant.name }}</p>
+            <p><b>Table:</b> {{ b.table.table_number }}</p>
+            <p><b>Date:</b> {{ b.booking_date }}</p>
+            <p><b>Time:</b> {{ b.booking_time }}</p>
+        </div>
+
+        <!-- CANCEL BUTTON -->
+        <a href="{% url 'cancel_booking' b.id %}"
+           onclick="return confirm('Are you sure you want to cancel this booking?')"
+           class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
+
+            Cancel
+        </a>
+
+    </div>
+
+{% empty %}
+    <p>No bookings found</p>
+{% endfor %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="bg-green-100 text-green-700 p-2 mb-2 rounded">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+    <!-- RECENT ORDERS -->
+    <div class="bg-white shadow-xl rounded-3xl p-8 mt-12">
+
+        <h2 class="text-3xl font-bold mb-8">
+            Recent Orders 📦
+        </h2>
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full">
+
+                <thead>
+
+                    <tr class="border-b">
+                        <th class="text-left py-4">Order ID</th>
+                        <th class="text-left py-4">Customer</th>
+                        <th class="text-left py-4">Total</th>
+                        <th class="text-left py-4">Status</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for order in recent_orders %}
+
+                    <tr class="border-b">
+
+                        <td class="py-4">#{{ order.id }}</td>
+                        <td class="py-4">{{ order.user.username }}</td>
+                        <td class="py-4">₹{{ order.total }}</td>
+
+                        <td class="py-4">
+
+                            {% if order.status == 'Pending' %}
+                                <span class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-full">
+                                    Pending
+                                </span>
+
+                            {% elif order.status == 'Preparing' %}
+                                <span class="bg-orange-100 text-orange-700 px-4 py-2 rounded-full">
+                                    Preparing
+                                </span>
+
+                            {% elif order.status == 'Out for Delivery' %}
+                                <span class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full">
+                                    Out for Delivery
+                                </span>
+
+                            {% else %}
+                                <span class="bg-green-100 text-green-700 px-4 py-2 rounded-full">
+                                    Delivered
+                                </span>
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

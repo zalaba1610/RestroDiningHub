@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="max-w-3xl mx-auto px-6 mt-16 mb-20">
+
+    <div class="bg-white p-10 rounded-3xl shadow-xl">
+
+        <h1 class="text-5xl font-bold mb-10">
+            Checkout 💳
+        </h1>
+
+        <!-- ADDRESS FORM -->
+
+        <div class="grid gap-5">
+
+            <input
+            type="text"
+            placeholder="Full Name"
+            class="border p-4 rounded-2xl outline-none focus:border-red-500">
+
+            <input
+            type="text"
+            placeholder="Phone Number"
+            class="border p-4 rounded-2xl outline-none focus:border-red-500">
+
+            <textarea
+            rows="4"
+            placeholder="Delivery Address"
+            class="border p-4 rounded-2xl outline-none focus:border-red-500"></textarea>
+
+        </div>
+
+        <!-- ORDER SUMMARY -->
+
+        <div class="mt-10">
+
+            <h2 class="text-2xl font-bold mb-5">
+                Order Summary
+            </h2>
+
+            {% for item in cart_items %}
+
+            <div class="flex justify-between items-center mb-4">
+
+                <div>
+
+                    <h3 class="font-semibold text-lg">
+                        {{ item.item.name }}
+                    </h3>
+
+                    <p class="text-gray-500">
+                        Qty: {{ item.quantity }}
+                    </p>
+
+                </div>
+
+                <p class="font-bold text-lg">
+                    ₹{{ item.item.price }}
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+            <hr class="my-6">
+
+            <div class="flex justify-between text-lg mb-3">
+
+                <span>Delivery Fee</span>
+
+                <span>₹50</span>
+
+            </div>
+
+            <div class="flex justify-between text-3xl font-bold">
+
+                <span>Total</span>
+
+                <span>₹{{ total }}</span>
+
+            </div>
+
+        </div>
+
+        <!-- PAYMENT BUTTON -->
+
+        <button
+        id="rzp-button"
+        class="w-full bg-red-500 hover:bg-red-600 text-white py-4 rounded-2xl mt-10 text-xl font-semibold transition">
+
+            Pay Now
+
+        </button>
+
+    </div>
+
+</div>
+
+<!-- RAZORPAY -->
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+
+var options = {
+
+    "key": "{{ razorpay_key }}",
+
+    "amount": "{{ payment.amount }}",
+
+    "currency": "INR",
+
+    "name": "RestroDining Hub",
+
+    "description": "Food Order Payment",
+
+    "image": "https://cdn-icons-png.flaticon.com/512/3075/3075977.png",
+
+    "order_id": "{{ payment.id }}",
+
+    "handler": function (response){
+
+        alert("Payment Successful ✅");
+
+        window.location.href = "/orders/";
+
+    },
+
+    "theme": {
+        "color": "#ef4444"
+    }
+
+};
+
+var rzp1 = new Razorpay(options);
+
+document.getElementById('rzp-button').onclick = function(e){
+
+    rzp1.open();
+
+    e.preventDefault();
+
+}
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto px-6 mt-12">
+
+    <h1 class="text-4xl font-bold mb-10">
+        Book Your Table 🍽️
+    </h1>
+
+    <div class="grid md:grid-cols-3 gap-8">
+
+        {% for table in tables %}
+
+        <div class="bg-white shadow-xl rounded-3xl p-8 text-center">
+
+            <h2 class="text-3xl font-bold">
+                Table {{ table.table_number }}
+            </h2>
+
+            <p class="mt-4 text-gray-500">
+                Seats: {{ table.seats }}
+            </p>
+
+            {% if table.is_booked %}
+
+            <button
+            class="bg-gray-400 text-white px-6 py-3 rounded-2xl mt-6 w-full">
+
+                Already Booked
+
+            </button>
+
+            {% else %}
+
+            <a href="/book-table/{{ table.id }}/"
+               class="block bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-2xl mt-6">
+
+                Book Now
+
+            </a>
+
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

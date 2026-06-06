@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="text-3xl font-bold mb-6">Select Your Table</h1>
+
+<div class="grid grid-cols-4 gap-4">
+
+  {% for table in tables %}
+
+    <div class="p-4 border rounded text-center">
+
+      <h2 class="text-xl font-bold">Table {{ table.table_number }}</h2>
+
+      {% if table.is_booked %}
+        <p class="text-red-500">Booked ❌</p>
+      {% else %}
+        <p class="text-green-500">Available ✔</p>
+
+        <a href="/book-table/{{ table.id }}/"
+           class="bg-blue-500 text-white px-3 py-1 rounded mt-2 inline-block">
+          Book Table
+        </a>
+      {% endif %}
+
+    </div>
+
+  {% endfor %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto px-6 mt-10 mb-20">
+
+    <h1 class="text-5xl font-bold mb-10">
+        Your Cart 🛒
+    </h1>
+
+    <div class="grid md:grid-cols-3 gap-10">
+
+        <!-- CART ITEMS -->
+
+        <div class="md:col-span-2">
+
+            {% for item in cart_items %}
+
+            <div class="bg-white rounded-3xl shadow-lg p-6 flex gap-6 mb-6">
+
+                <!-- IMAGE -->
+
+                <img
+                src="{{ item.item.image.url }}"
+                class="w-[180px] h-[150px] object-cover rounded-2xl">
+
+                <!-- CONTENT -->
+
+                <div class="flex-1">
+
+                    <div class="flex justify-between">
+
+                        <div>
+
+                            <h2 class="text-2xl font-bold">
+                                {{ item.item.name }}
+                            </h2>
+
+                            <p class="text-gray-500 mt-2">
+                                ₹{{ item.item.price }}
+                            </p>
+
+                        </div>
+
+                        <!-- REMOVE -->
+
+                        <a href="/remove/{{ item.id }}/"
+                           class="text-red-500 text-xl">
+
+                            ✖
+
+                        </a>
+
+                    </div>
+
+                    <!-- QUANTITY -->
+
+                    <div class="flex items-center gap-4 mt-6">
+
+                        <!-- DECREASE -->
+
+                        <a href="/decrease/{{ item.id }}/"
+                           class="bg-gray-200 w-10 h-10 flex items-center justify-center rounded-full text-xl">
+
+                            -
+
+                        </a>
+
+                        <!-- QTY -->
+
+                        <span class="text-2xl font-bold">
+                            {{ item.quantity }}
+                        </span>
+
+                        <!-- INCREASE -->
+
+                        <a href="/increase/{{ item.id }}/"
+                           class="bg-black text-white w-10 h-10 flex items-center justify-center rounded-full text-xl">
+
+                            +
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="bg-white p-10 rounded-3xl shadow-lg text-center">
+
+                <h2 class="text-3xl font-bold text-gray-700">
+                    Your cart is empty 😔
+                </h2>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- ORDER SUMMARY -->
+
+        <div>
+
+            <div class="bg-white rounded-3xl shadow-lg p-8 sticky top-28">
+
+                <h2 class="text-3xl font-bold mb-8">
+                    Order Summary
+                </h2>
+
+                <!-- TOTAL -->
+
+                <div class="flex justify-between text-lg mb-4">
+
+                    <span>Subtotal</span>
+
+                    <span>₹{{ total }}</span>
+
+                </div>
+
+                <div class="flex justify-between text-lg mb-4">
+
+                    <span>Delivery</span>
+
+                    <span>₹50</span>
+
+                </div>
+
+                <hr class="my-5">
+
+                <div class="flex justify-between text-2xl font-bold">
+
+                    <span>Total</span>
+
+                    <span>₹{{ total|add:50 }}</span>
+
+                </div>
+
+                <!-- CHECKOUT -->
+
+                <a href="/checkout/"
+                   class="block text-center bg-red-500 hover:bg-red-600 text-white py-4 rounded-2xl mt-8 text-lg font-semibold">
+
+                    Proceed To Checkout
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
